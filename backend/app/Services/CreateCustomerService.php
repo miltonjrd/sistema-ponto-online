@@ -28,13 +28,15 @@ class CreateCustomerService implements ServiceContract {
             'role_id' => 'required|integer'
         ], [
             'required' => 'O campo :attribute é obrigatório.',
-            'string' => 'O campo :attribute deve ser uma string.'
+            'string' => 'O campo :attribute deve ser uma string.',
+            'integer' => 'O campo :attribute deve ser um número inteiro.',
         ]);
 
         $data = [
-            'name' => $body['name'],
-            'password' => Hash::make($body['password']),
-            ''
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
+            'age' => $request->age,
+            'role_id' => $request->role_id
         ];
 
         $this->repository->create($data);

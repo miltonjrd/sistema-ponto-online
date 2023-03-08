@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 
-class Admin extends Model
+class Admin extends Model implements JWTSubject
 {
     use HasFactory;
 
@@ -18,4 +19,20 @@ class Admin extends Model
     protected $hidden = [
         'password'
     ];
+
+    /**
+     * @return array;
+     */
+    public function getJWTCustomClaims(): array
+    {
+        return [];
+    } 
+
+    /**
+     * @return mixed;
+     */
+    public function getJWTIdentifier(): mixed
+    {
+        return $this->getKey();
+    }
 }
