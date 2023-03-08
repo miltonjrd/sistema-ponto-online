@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\ServiceContract;
 use Illuminate\Support\ServiceProvider;
 use App\Contracts\RepositoryContract;
 use App\Repositories\CustomerRepository;
@@ -14,11 +15,13 @@ class CustomerProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->when(CustomerController::class)
+        $this->app->when(ServiceContract::class)
         ->needs(RepositoryContract::class)
         ->give(function() {
             return new CustomerRepository();
         });
+
+        
     }
 
     /**
