@@ -6,6 +6,8 @@ use App\Contracts\ServiceContract;
 use App\Contracts\RepositoryContract;
 use Illuminate\Support\Facades\Request;
 
+use App\Exceptions\UnauthorizedResponseException;
+
 class AdminAuthenticationService implements ServiceContract
 {
     /**
@@ -20,17 +22,19 @@ class AdminAuthenticationService implements ServiceContract
 	/**
 	 * @param Request $request
 	 */
-	public function execute(Request $request) 
+	public function execute($body) 
     {
         $credentials = [
-            "id" => $request->code,
-            "password" => $request->password
+            "id" => $body->code,
+            "password" => $body->password
         ];
 
         $token = auth()->attempt($credentials);
 
         if (!$token) {
-            
+            return throw new UnauthorizedResponseException();
         }
+
+        return $token;
 	}
 }

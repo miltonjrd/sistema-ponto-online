@@ -18,12 +18,8 @@ class DeleteRoleService implements ServiceContract
         $this->repository = $repository;
     }
 
-    public function execute(Request $request)
+    public function execute($body)
     {
-        $request->validate([
-            'id' => 'required|integer'
-        ]);
-
-        $this->repository->delete($request->id);
+        $this->repository->delete($body->id);
     }
 }

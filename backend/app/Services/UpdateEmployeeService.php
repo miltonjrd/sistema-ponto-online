@@ -17,7 +17,7 @@ class UpdateEmployeeService implements ServiceContract
         $this->repository = $repository;
     }
 
-    public function execute(Request $request)
+    public function execute($body)
     {
         // $request->validate([
         //     'id' => 'required|integer',
@@ -28,11 +28,11 @@ class UpdateEmployeeService implements ServiceContract
         // ]);
 
         $data = [
-            'name' => $request->name,
-            'age' => $request->age,
-            'role_id' => $request->role_id
+            'name' => $body->name,
+            'age' => $body->age,
+            'role_id' => $body->role_id
         ];
 
-        $this->repository->update($request->id, $data);
+        $this->repository->update($body->id, $data);
     }
 }

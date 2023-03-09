@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\Contracts\ServiceContract;
 use App\Contracts\RepositoryContract;
+use App\Exceptions\UnauthorizedResponseException;
 
 class EmployeeAuthenticationService implements ServiceContract
 {
@@ -18,8 +19,9 @@ class EmployeeAuthenticationService implements ServiceContract
 
 	/**
 	 * @param mixed $data
+     * @return string
 	 */
-    public function execute(mixed $data) 
+    public function execute(mixed $data)
     {
         $credentials = [
             'id' => $data->code,
@@ -28,9 +30,10 @@ class EmployeeAuthenticationService implements ServiceContract
 
         $token = auth()->attempt($credentials);
 
-        if (!$token) 
-        {
-
+        if (!$token) {
+            throw new UnauthorizedResponseException();
         }
+
+        return $token;
 	}
 }

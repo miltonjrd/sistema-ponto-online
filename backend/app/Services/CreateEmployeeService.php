@@ -23,7 +23,7 @@ class CreateEmployeeService implements ServiceContract
     /**
      * 
      */
-    public function execute(CreateEmployeeRequest $request) 
+    public function execute($body) 
     {
         // $request->validate([
         //     'name' => 'required|string',
@@ -37,10 +37,10 @@ class CreateEmployeeService implements ServiceContract
         // ]);
 
         $data = [
-            'name' => $request->name,
-            'password' => Hash::make($request->password),
-            'age' => $request->age,
-            'role_id' => $request->role_id
+            'name' => $body->name,
+            'password' => Hash::make($body->password),
+            'age' => $body->age,
+            'role_id' => $body->role_id
         ];
 
         $this->repository->create($data);

@@ -3,7 +3,7 @@
 namespace App\Exceptions;
 use App\Exceptions\ResponseException;
 
-class NotFoundResponseException extends ResponseException
+class UnauthorizedResponseException extends ResponseException
 {
     
 	/**
@@ -11,7 +11,7 @@ class NotFoundResponseException extends ResponseException
 	 */
 	protected function message(): string 
     {
-        return 'Recurso não encontrado.';
+        return 'As credenciais fornecidas são inválidas.';
 	}
 	
 	/**
@@ -19,7 +19,7 @@ class NotFoundResponseException extends ResponseException
 	 */
 	protected function error(): string 
     {
-        return 'Not found.';
+        return 'Unauthorized.';
 	}
 	
 	/**
@@ -27,6 +27,6 @@ class NotFoundResponseException extends ResponseException
 	 */
 	protected function status(): int 
     {
-        return 404;
+        return 401;
 	}
 }

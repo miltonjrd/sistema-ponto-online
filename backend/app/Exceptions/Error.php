@@ -37,7 +37,8 @@ class Error implements Jsonable, Arrayable, JsonSerializable
 	public function toArray() 
     {
         return [
-            'statusCode' => $this->error_code,
+            'success' => false,
+            'status' => $this->error_code,
             'message' => $this->message
         ];
 	}

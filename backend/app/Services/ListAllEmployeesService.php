@@ -23,7 +23,7 @@ class ListAllEmployeesService implements ServiceContract
      */
     public function execute(): Collection
     {
-        $costumers = $this->repository->listAll();
-        return $costumers;
+        $employees = $this->repository->listAll();
+        return $employees;
     }
 }
