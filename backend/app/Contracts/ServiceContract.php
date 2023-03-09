@@ -2,8 +2,6 @@
 
 namespace App\Contracts;
 
-use Illuminate\Support\Facades\Request;
-
 interface ServiceContract {
-    public function execute(Request $request): mixed;
+    public function execute(mixed $data): mixed;
 }

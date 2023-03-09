@@ -21,20 +21,44 @@ class ClockedInRepository implements ClockedInRepositoryContract
     }
 
     /**
-     * @return Collection
+     * @return array
      */
-    public function listAllWithEmployeeData(): Collection
+    public function listAllWithEmployeeData($filterDateStart = null, $filterDateEnd = null): array
     {
-        $results = ClockedIn::select([
-            DB::raw('e.id AS id'),
-            DB::raw('e.name AS employee_name'),
-            DB::raw('r.title AS role'),
-            'e.age',
-            'e.manager_name',
-            'clocked_in.created_at'
-        ])->join('employees AS e', 'id', 'clocked_in.employee_id')
-        ->join('roles AS r', 'id', 'c.role_id')
-        ->get();
+        // $results = ClockedIn::select([
+        //     DB::raw('e.id AS id'),
+        //     DB::raw('e.name AS employee_name'),
+        //     DB::raw('r.title AS role'),
+        //     'e.age',
+        //     'e.manager_name',
+        //     'clocked_in.created_at'
+        // ])->join('employees AS e', 'id', 'clocked_in.employee_id')
+        // ->join('roles AS r', 'id', 'c.role_id')
+        // ->get();
+
+        $sql = "SELECT e.id, e.name AS employee_name, r.title AS role, e.age, e.manager_name, clocked_in.created_at
+            FROM clocked_in
+            INNER JOIN employees AS e
+            ON e.id = clocked_in.employee_id
+            INNER JOIN roles AS r
+            ON r.id = e.role_id
+        ";
+
+        // in case of filters being especified, concat it to the query
+        if ($filterDateStart) {
+            $sql += " WHERE clocked_in.created_at >= :filterDateStart";
+        }
+
+        if ($filterDateEnd) {
+            $sql += " AND clocked_in.created_at <= :filterDateEnd";
+        }
+
+        $sql += " ORDER BY clocked_in.created_at DESC";
+
+        $results = DB::select($sql, [
+            'filterDateStart' => $filterDateStart,
+            'filterDateEnd' => $filterDateEnd
+        ]);
 
         return $results;
     }

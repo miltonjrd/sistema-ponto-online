@@ -12,6 +12,6 @@ class ClockedIn extends Model
     protected $table = 'clocked_in';
 
     protected $fillable = [
-        'customer_id'
+        'employee_id'
     ];
 }
