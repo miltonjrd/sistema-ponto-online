@@ -19,13 +19,13 @@ class UpdateEmployeeService implements ServiceContract
 
     public function execute(Request $request)
     {
-        $request->validate([
-            'id' => 'required|integer',
-            'name' => 'sometimes|string',
-            'age' => 'sometimes|integer',
-            'role_id' => 'sometimes|integer',
-            'manager_name' => 'prohibited'
-        ]);
+        // $request->validate([
+        //     'id' => 'required|integer',
+        //     'name' => 'sometimes|string',
+        //     'age' => 'sometimes|integer',
+        //     'role_id' => 'sometimes|integer',
+        //     'manager_name' => 'prohibited'
+        // ]);
 
         $data = [
             'name' => $request->name,

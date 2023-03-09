@@ -4,7 +4,7 @@ namespace App\Services;
 use App\Contracts\ServiceContract;
 use App\Contracts\RepositoryContract;
 
-use Illuminate\Support\Facades\Request;
+use App\Http\Requests\CreateRoleRequest;
 
 class CreateRoleService implements ServiceContract
 {
@@ -18,14 +18,14 @@ class CreateRoleService implements ServiceContract
         $this->repository = $repository;
     }
 
-    public function execute(Request $request)
+    public function execute(CreateRoleRequest $request)
     {
-        $request->validate([
-            'title' => 'required|string'
-        ], [
-            'required' => 'O campo :attribute é obrigatório.',
-            'string' => 'O campo :attribute deve ser uma string.'
-        ]);
+        // $request->validate([
+        //     'title' => 'required|string'
+        // ], [
+        //     'required' => 'O campo :attribute é obrigatório.',
+        //     'string' => 'O campo :attribute deve ser uma string.'
+        // ]);
 
         $data = [
             'title' => $request->title
