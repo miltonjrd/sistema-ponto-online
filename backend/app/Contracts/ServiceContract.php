@@ -2,6 +2,7 @@
 
 namespace App\Contracts;
 
-interface ServiceContract {
+interface ServiceContract 
+{
     public function execute(mixed $data): mixed;
 }

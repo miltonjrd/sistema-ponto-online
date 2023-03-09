@@ -9,14 +9,22 @@ use App\Http\Requests\DeleteRoleRequest;
 
 use App\Services\CreateRoleService;
 use App\Services\DeleteRoleService;
+use App\Services\ListAllRolesService;
 
 class RoleController extends Controller
 {
+    public function listAll(ListAllRolesService $service)
+    {
+        $roles = $service->execute();
+
+        return response()->json($roles);
+    }
+
     public function create(CreateRoleRequest $request, CreateRoleService $service)
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'Cargo criado com sucesso.'
         ], 201);
@@ -26,7 +34,7 @@ class RoleController extends Controller
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'Cargo deletado com sucesso.'
         ], 200);

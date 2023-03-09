@@ -20,9 +20,9 @@ class AdminAuthenticationService implements ServiceContract
         $this->repository = $repository;
     }
 	/**
-	 * @param Request $request
+	 * @param mixed $body
 	 */
-	public function execute($body) 
+	public function execute(mixed $body): mixed
     {
         $credentials = [
             "id" => $body->code,

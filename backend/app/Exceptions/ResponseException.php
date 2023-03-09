@@ -12,9 +12,9 @@ abstract class ResponseException extends Exception
     abstract protected function error(): string;
     abstract protected function status(): int;
 
-    protected function render(): JsonResponse
+    public function render(): JsonResponse
     {
-        $error = new Error($this->message(), $this->error());
+        $error = new Error($this->status(), $this->message());
         return response()->json($error->toArray(), $this->status());
     }
 }

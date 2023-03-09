@@ -23,19 +23,8 @@ class CreateEmployeeService implements ServiceContract
     /**
      * 
      */
-    public function execute($body) 
+    public function execute(mixed $body): mixed
     {
-        // $request->validate([
-        //     'name' => 'required|string',
-        //     'password' => 'required|string',
-        //     'age' => 'required|integer',
-        //     'role_id' => 'required|integer'
-        // ], [
-        //     'required' => 'O campo :attribute é obrigatório.',
-        //     'string' => 'O campo :attribute deve ser uma string.',
-        //     'integer' => 'O campo :attribute deve ser um número inteiro.',
-        // ]);
-
         $data = [
             'name' => $body->name,
             'password' => Hash::make($body->password),
@@ -44,5 +33,7 @@ class CreateEmployeeService implements ServiceContract
         ];
 
         $this->repository->create($data);
+
+        return true;
     }
 }

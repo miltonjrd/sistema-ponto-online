@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RoleController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,6 +18,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(AdminController::class)->prefix('/admin')->group(function () {
+    Route::middleware(['assign.guard:admins'])->post('/login', 'login');
+});
+
+Route::controller(EmployeeController::class)->prefix('/employees')->group(function () {
+    Route::get('/', 'listAll');
+
+    Route::middleware(['assign.guard:admins'])->post('/', 'create');
+
+    Route::middleware(['assign.guard:admins'])->put('/', 'update');
+
+    Route::middleware(['assign.guard:admins'])->delete('/', 'delete');
+});
+
+Route::controller(RoleController::class)->prefix('/roles')->group(function () {
+    Route::get('/', 'listAll');
+
+    Route::middleware(['assign.guard:admins'])->post('/', 'create');
+
+    Route::middleware(['assign.guard:admins'])->delete('/', 'delete');
 });

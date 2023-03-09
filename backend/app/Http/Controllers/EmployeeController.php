@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Request;
 
 use App\Http\Controllers\Controller;
 
-class CustomerController extends Controller
+class EmployeeController extends Controller
 {
     public function __construct() { }
 
@@ -26,7 +26,7 @@ class CustomerController extends Controller
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'Funcionário criado com sucesso.'
         ], 201);
@@ -43,7 +43,7 @@ class CustomerController extends Controller
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'Dados do funcionário atualizados com sucesso.'
         ], 200);
@@ -53,7 +53,7 @@ class CustomerController extends Controller
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'O funcionário foi deletado com sucesso.'
         ], 200);
@@ -63,7 +63,7 @@ class CustomerController extends Controller
     {
         $service->execute($request);
 
-        response()->json([
+        return response()->json([
             'success' => true,
             'message' => 'Você bateu seu ponto de hoje.'
         ], 200);

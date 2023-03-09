@@ -14,7 +14,7 @@ return [
     */
 
     'defaults' => [
-        'guard' => 'web',
+        'guard' => 'admins',
         'passwords' => 'employees',
     ],
 
@@ -36,11 +36,11 @@ return [
     */
 
     'guards' => [
-        'api:admins' => [
+        'admins' => [
             'driver' => 'jwt',
             'provider' => 'admins'
         ],
-        'api:employees' => [
+        'employees' => [
             'driver' => 'jwt',
             'provider' => 'employees'
         ],

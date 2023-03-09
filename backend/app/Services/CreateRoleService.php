@@ -18,19 +18,14 @@ class CreateRoleService implements ServiceContract
         $this->repository = $repository;
     }
 
-    public function execute(CreateRoleRequest $request)
+    public function execute(mixed $body): mixed
     {
-        // $request->validate([
-        //     'title' => 'required|string'
-        // ], [
-        //     'required' => 'O campo :attribute é obrigatório.',
-        //     'string' => 'O campo :attribute deve ser uma string.'
-        // ]);
-
         $data = [
-            'title' => $request->title
+            'title' => $body->title
         ];
 
         $this->repository->create($data);
+
+        return true;
     }
 }

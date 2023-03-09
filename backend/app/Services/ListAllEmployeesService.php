@@ -2,11 +2,10 @@
 
 namespace App\Services;
 use App\Contracts\RepositoryContract;
-use App\Contracts\ServiceContract;
 
-use Illuminate\Database\Eloquent\Collection;
+use App\Contracts\ServiceReadContract;
 
-class ListAllEmployeesService implements ServiceContract 
+class ListAllEmployeesService implements ServiceReadContract 
 {
     /**
      * @var RepositoryContract;
@@ -19,9 +18,9 @@ class ListAllEmployeesService implements ServiceContract
     }
 
     /**
-     * @return Collection;
+     * @return mixed
      */
-    public function execute(): Collection
+    public function execute(): mixed
     {
         $employees = $this->repository->listAll();
         return $employees;
