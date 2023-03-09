@@ -5,7 +5,7 @@ use App\Contracts\RepositoryContract;
 use App\Contracts\ServiceContract;
 use Illuminate\Support\Facades\Request;
 
-class UpdateCustomerService implements ServiceContract
+class UpdateEmployeeService implements ServiceContract
 {
     /**
      * @var RepositoryContract;

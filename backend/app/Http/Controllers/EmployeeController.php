@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEmployeeRequest;
+use App\Services\CreateEmployeeService;
 use Illuminate\Support\Facades\Request;
 
-use App\Contracts\RepositoryContract;
-use App\Contracts\ServiceContract;
 use App\Http\Controllers\Controller;
-
-use App\Services\CreateCustomerService;
 
 class CustomerController extends Controller
 {
     public function __construct() { }
 
-    public function create(Request $req, CreateCustomerService $service) 
+    public function create(CreateEmployeeRequest $req, CreateEmployeeService $service) 
     {
+
         $service->execute($req);
     }
 }

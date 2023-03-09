@@ -6,7 +6,7 @@ use App\Contracts\ServiceContract;
 
 use Illuminate\Database\Eloquent\Collection;
 
-class ListAllCustomersService implements ServiceContract 
+class ListAllEmployeesService implements ServiceContract 
 {
     /**
      * @var RepositoryContract;

@@ -3,16 +3,17 @@
 namespace App\Services;
 use App\Contracts\ServiceContract;
 use App\Contracts\RepositoryContract;
+
 use Illuminate\Support\Facades\Request;
 
-class DeleteCustomerService implements ServiceContract
+class DeleteRoleService implements ServiceContract
 {
     /**
-     * @var RepositoryContract;
+     * @var RepositoryContract
      */
     private $repository;
 
-    public function __construct(RepositoryContract $repository) 
+    public function __construct(RepositoryContract $repository)
     {
         $this->repository = $repository;
     }
@@ -21,9 +22,6 @@ class DeleteCustomerService implements ServiceContract
     {
         $request->validate([
             'id' => 'required|integer'
-        ], [
-            'required' => 'O campo :attribute é obrigatório.',
-            'integer' => 'O campo :attribute deve ser um número inteiro.'
         ]);
 
         $this->repository->delete($request->id);

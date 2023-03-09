@@ -15,7 +15,7 @@ return [
 
     'defaults' => [
         'guard' => 'web',
-        'passwords' => 'users',
+        'passwords' => 'employees',
     ],
 
     /*
@@ -40,9 +40,9 @@ return [
             'driver' => 'jwt',
             'provider' => 'admins'
         ],
-        'api:customers' => [
+        'api:employees' => [
             'driver' => 'jwt',
-            'provider' => 'customers'
+            'provider' => 'employees'
         ],
     ],
 
@@ -68,9 +68,9 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
         ],
-        'customers' => [
+        'employees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Customer::class
+            'model' => App\Models\Employee::class
         ],
     ],
 
@@ -94,8 +94,8 @@ return [
     */
 
     'passwords' => [
-        'users' => [
-            'provider' => 'users',
+        'employees' => [
+            'provider' => 'employees',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,
