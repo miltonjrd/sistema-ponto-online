@@ -25,12 +25,7 @@ class CreateEmployeeService implements ServiceContract
      */
     public function execute(mixed $body): mixed
     {
-        $data = [
-            'name' => $body->name,
-            'password' => Hash::make($body->password),
-            'age' => $body->age,
-            'role_id' => $body->role_id
-        ];
+        $data = $body->validated();
 
         $this->repository->create($data);
 

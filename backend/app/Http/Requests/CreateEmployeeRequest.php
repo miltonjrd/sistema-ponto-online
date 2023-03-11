@@ -15,6 +15,14 @@ class CreateEmployeeRequest extends FormRequest
         return !!auth()->user();
     }
 
+    public function validated($key = null, $default = null): mixed
+    {
+        // append manager_id to the request before validation
+        $data = $this->all();
+
+        return array_merge($data, [ 'manager_id' => auth()->user()->id ]);
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -26,7 +34,7 @@ class CreateEmployeeRequest extends FormRequest
             'name' => 'required|string',
             'password' => 'required|string',
             'age' => 'required|integer',
-            'role_id' => 'required|integer'
+            'role_id' => 'required|integer',
         ];
     }
 }

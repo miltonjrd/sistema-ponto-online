@@ -12,6 +12,11 @@ use App\Services\AdminAuthenticationService;
 
 class AdminController extends Controller
 {
+    public function me()
+    {
+        return response()->json(auth()->user());
+    }
+
     public function login(Request $request, AdminAuthenticationService $service)
     {
         try {
