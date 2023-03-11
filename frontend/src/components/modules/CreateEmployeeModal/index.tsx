@@ -24,7 +24,7 @@ const CreateEmployeeModal: FC<Props> = ({ show, close }) => {
                             ESC
                         </button>
                     </div>
-                    <Form />
+                    <Form closeModal={close} />
                 </Dialog.Panel>
             </div>
         </Dialog>

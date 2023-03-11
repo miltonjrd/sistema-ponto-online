@@ -1,22 +1,24 @@
-import { ChangeEvent, FormEvent, FC, useState } from 'react';
+import { ChangeEvent, FormEvent, FC, useState, useContext } from 'react';
 import axios from '@/utils/axios';
+import { AxiosError } from 'axios';
+import toast from 'react-hot-toast';
 
 // components
 import SpinnerButton from '@/components/common/SpinnerButton';
 
 type FormProps = {
-    name: string,
-    age: number,
-    role: number,
+    title: string,
     [key: string]: any
 };
 
-const Form: FC = () => {
+type Props = {
+    closeModal(): void
+};
+
+const Form: FC<Props> = ({ closeModal }) => {
     const [isSubmiting, setIsSubmiting] = useState<boolean>(false);
     const [form, setForm] = useState<FormProps>({
-        name: '',
-        age: 0,
-        role: 0
+        title: '',
     });
 
     const handleInputChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -34,56 +36,39 @@ const Form: FC = () => {
 
         try {
             setIsSubmiting(true);
-            const response = await axios.post('/api/employees');
-            
+            const response = await axios.post('/roles', form);
+            toast.success(response.data.message);
+            closeModal();
         } catch (err: unknown) {
-            
+            if (err instanceof AxiosError) {
+                toast.error(err.response?.data.message);
+            }
         }
+        
+        setIsSubmiting(false);
+
     };
 
     return (
         <form className="flex flex-col gap-4 w-full lg:w-[700px] my-10" onSubmit={handleSubmit}>
-            <h4>Cadastre um novo funcionário</h4>
+            <h4>Registre um novo cargo</h4>
             <div>
-                <label className="text-sm" htmlFor="employee_name">Nome *:</label>
+                <label className="text-sm" htmlFor="role_name">Nome do cargo *:</label>
                 <input 
-                    id="employee_name" 
-                    name="name"
+                    id="role_name" 
+                    name="title"
                     className="block w-full bg-gray-50 focus:bg-white border px-4 py-2 sm:py-3 rounded-md transition-colors" 
                     type="text" 
                     value={form.name}
                     onChange={handleInputChange}
                 />
             </div>
-
-            <div>
-                <label className="text-sm" htmlFor="employee_age">Idade *:</label>
-                <input 
-                    id="employee_age" 
-                    name="age" 
-                    className="block w-full bg-gray-50 focus:bg-white border px-4 py-2 sm:py-3 rounded-md transition-colors"
-                    type="number" 
-                    value={form.age}
-                    onChange={handleInputChange}
-                />
-            </div>
-
-            <div>
-                <label className="text-sm" htmlFor="employee_role">Cargo *:</label>
-                <select 
-                    id="employee_role" 
-                    name="role" 
-                    className="block border px-4 py-2 rounded-md"
-                >
-                    <option selected disabled>Selecione</option>
-                    <option>EMPACOTADOR</option>
-                </select>
-            </div>
+            
             <div className="flex justify-between">
                 <button type="reset" className="text-red-500 hover:bg-red-50 active:bg-red-100 px-4 py-2 rounded-md transition-colors">
                     Resetar
                 </button>
-                <SpinnerButton active={true}>
+                <SpinnerButton active={isSubmiting}>
                     Salvar
                 </SpinnerButton>
             </div>

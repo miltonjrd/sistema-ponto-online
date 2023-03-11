@@ -1,34 +1,42 @@
-import { ReactElement, useState } from "react";
+import { ReactElement, useState, useContext } from "react";
 import { NextPageWithLayout } from "../_app";
 
 // components
 import Layout from "@/components/common/Layout";
-import CreateEmployeeModal from "@/components/modules/CreateEmployeeModal.tsx";
+import CreateRoleModal from "@/components/modules/CreateRoleModal";
 
 // icons
 import { BiPlus } from "react-icons/bi";
 import { BsTrash } from "react-icons/bs";
 import { TiEdit } from "react-icons/ti";
 
+// custom hooks
+import useApi from "@/hooks/useApi";
+
+// interfaces
+import Role from "@/interfaces/Role";
+
 const ManageRoles: NextPageWithLayout = () => {
     const [modalsState, setModalsState] = useState({
-        CREATE_EMPLOYEE_MODAL_SHOW: false
+        CREATE_ROLE_MODAL_SHOW: false
     });
+
+    const { data: roles, isLoading, mutate } = useApi<Role[]>('/roles');
 
     return (
         <main className="container flex flex-col items-center mx-auto px-4 pt-10">
-            <h4>Funcionários</h4>
+            <h4>Cargos</h4>
             <div>
                 <button 
                     type="button" 
                     className="flex bg-blue-500 hover:bg-blue-600 active:bg-blue-700 text-white py-2 px-4 rounded-md"
                     onClick={() => setModalsState((state) => ({
                         ...state,
-                        CREATE_EMPLOYEE_MODAL_SHOW: true
+                        CREATE_ROLE_MODAL_SHOW: true
                     }))}
                 >
                     <BiPlus className="mr-2" size={24} />
-                    Novo funcionário
+                    Novo cargo
                 </button>
                 <div className="overflow-x-auto max-w-full mt-5">
                     <table className="w-[900px] table-fixed">
@@ -40,10 +48,24 @@ const ManageRoles: NextPageWithLayout = () => {
                             </tr>
                         </thead>
                         <tbody className="divide-y border">
-                            {new Array(5).fill(0).map((_, i) => (
-                                <tr>
-                                    <td className="text-center py-3">{i}</td>
-                                    <td className="text-center py-3">Francisco Silva</td>
+                            {isLoading ?
+                            new Array(10).fill(0).map((_, i) => (
+                                <tr key={i} className="animate-pulse">
+                                    <td className="py-3">
+                                        <div className="mx-4 py-3 bg-gray-300 rounded-md" />
+                                    </td>
+                                    <td className="py-3">
+                                        <div className="mx-4 py-3 bg-gray-300 rounded-md" />
+                                    </td>
+                                    <td className="py-3">
+                                        <div className="mx-4 py-3 bg-gray-300 rounded-md" />
+                                    </td>
+                                </tr>
+                            )) :
+                            roles?.map((role, i) => (
+                                <tr key={role.id}>
+                                    <td className="text-center py-3">{role.id}</td>
+                                    <td className="text-center py-3">{role.title}</td>
                                     <td className="py-3">
                                         <div className="flex justify-around">
                                             <button type="button" className="text-red-500 hover:bg-red-50 active:bg-red-100 p-2 rounded-md">
@@ -60,11 +82,11 @@ const ManageRoles: NextPageWithLayout = () => {
                     </table>
                 </div>
             </div>
-            <CreateEmployeeModal 
-                show={modalsState.CREATE_EMPLOYEE_MODAL_SHOW} 
+            <CreateRoleModal 
+                show={modalsState.CREATE_ROLE_MODAL_SHOW} 
                 close={() => setModalsState((state) => ({ 
                     ...state,
-                    CREATE_EMPLOYEE_MODAL_SHOW: false
+                    CREATE_ROLE_MODAL_SHOW: false
                 }))} 
             />
         </main>

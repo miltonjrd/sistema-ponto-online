@@ -1,14 +1,14 @@
+import { NextPageWithLayout } from "../_app";
 import { ChangeEvent, FormEvent, ReactElement, useState } from "react";
 import toast from 'react-hot-toast';
 import axios from '@/utils/axios';
+import { AxiosError } from "axios";
 import jsCookie from 'js-cookie';
 
 // components
 import ToasterLayout from "@/components/common/ToasterLayout";
 import SpinnerButton from "@/components/common/SpinnerButton";
 import Link from "next/link";
-import { NextPageWithLayout } from "../_app";
-import { AxiosError } from "axios";
 
 type FormProps = {
     code: string,
@@ -39,7 +39,7 @@ const Login: NextPageWithLayout = () => {
             setIsSubmiting(true);
             const response = await axios.post<{ message: string, token: string }>('/admin/login', form);
             toast.success(response.data.message);
-            sessionStorage.setItem('jwt_token', response.data.token);
+            jsCookie.set('jwt_token', response.data.token);
 
             window.location.href = '/';
         } catch (err: unknown) {
