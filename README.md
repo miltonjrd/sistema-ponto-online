@@ -1,6 +1,6 @@
-##Sistema de ponto online
+## Sistema de ponto online
 
-###Instruções:
+### Instruções: ###
 
 Para rodar o projeto na sua maquina, digite os comandos em sequência:
 
