@@ -34,7 +34,7 @@ Route::controller(EmployeeController::class)->prefix('/employees')->group(functi
     Route::middleware(['assign.guard:employees'])->post('/login', 'login');
     Route::middleware(['assign.guard:employees'])->post('/clockin', 'clockIn');
 
-    Route::middleware(['assign.guard:admins'])->put('/', 'update');
+    Route::middleware(['assign.guard:admins'])->put('/{id}', 'update');
 
     Route::middleware(['assign.guard:admins'])->delete('/{id}', 'delete');
 });

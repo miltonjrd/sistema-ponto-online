@@ -13,7 +13,15 @@ class EmployeeRepository implements RepositoryContract
      * @return Collection
      */
     public function listAll(): Collection {
-        return Employee::all();
+        return Employee::select([
+            'employees.id',
+            'employees.name',
+            'employees.age',
+            'm.name AS manager_name',
+            'r.title AS role'
+        ])->join('admins AS m', 'm.id', 'employees.manager_id')
+        ->join('roles AS r', 'r.id', 'employees.role_id')
+        ->get();
     }
 
     public function listById(int $id): Employee {

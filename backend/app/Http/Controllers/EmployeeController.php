@@ -63,7 +63,7 @@ class EmployeeController extends Controller
 
     public function update(UpdateEmployeeRequest $request, UpdateEmployeeService $service)
     {
-        $service->execute($request);
+        $service->execute($request->validated());
 
         return response()->json([
             'success' => true,

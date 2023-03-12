@@ -14,6 +14,13 @@ class UpdateEmployeeRequest extends FormRequest
         return !!auth()->user();
     }
 
+    public function validationData(): array
+    {
+        $data = $this->all();
+        $data['id'] = $this->route('id');
+        return $data;
+    }
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,8 +32,7 @@ class UpdateEmployeeRequest extends FormRequest
             'id' => 'required|integer',
             'name' => 'sometimes|string',
             'age' => 'sometimes|integer',
-            'role_id' => 'sometimes|integer',
-            'manager_name' => 'prohibited'
+            'role_id' => 'sometimes|integer'
         ];
     }
 
