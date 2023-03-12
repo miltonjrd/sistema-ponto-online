@@ -7,8 +7,17 @@ import useApi from "@/hooks/useApi";
 import auth from "@/utils/auth";
 import { GetServerSideProps } from "next";
 
+interface ClockIn { 
+    id: number, 
+    employee_name: string, 
+    role: string, 
+    age: number, 
+    manager_name: string, 
+    created_at: string 
+}
+
 const Checked = () => {
-    const { data: checks, isLoading } = useApi('/employees/clockin');
+    const { data: checks, isLoading } = useApi<ClockIn[]>('/employees/clockin');
 
     return (
         <main className="container flex flex-col items-center mx-auto px-4 pt-10">
