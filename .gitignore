@@ -1,5 +1,6 @@
 backend/.phpunit.cache
 frontend/node_modules
+frontend/.next
 backend/public/build
 backend/public/hot
 backend/public/storage

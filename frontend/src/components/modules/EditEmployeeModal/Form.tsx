@@ -61,7 +61,7 @@ const Form: FC<Props> = ({ closeModal, employeeId }) => {
 
         try {
             setIsSubmiting(true);
-            const response = await axios.post('/employees', form);
+            const response = await axios.put(`/employees/${employeeId}`, form);
             toast.success(response.data.message);
             closeModal();
         } catch (err: unknown) {
