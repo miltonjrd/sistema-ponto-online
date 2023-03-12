@@ -1,13 +1,19 @@
+import { Agent } from "http";
 import axios from "./axios";
 
 // helper para checar se o usuário está autenticado
 const auth = async (token: string): Promise<boolean> => {
-    console.log(axios)
+    // force ipv4
+    const httpAgent = new Agent({ family: 4 });
+
     try {
-        await axios.get('/admin/me', {
+        await axios({
+            url: '/admin/me', 
+            method: 'get',
             headers: {
-                Authorization: 'Bearer' + token
-            }
+                Authorization: 'Bearer ' + token
+            },
+            httpAgent
         });
     } catch (err: unknown) {
         return false;

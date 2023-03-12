@@ -15,6 +15,8 @@ import useApi from "@/hooks/useApi";
 
 // interfaces
 import Role from "@/interfaces/Role";
+import auth from "@/utils/auth";
+import { GetServerSideProps } from "next";
 
 const ManageRoles: NextPageWithLayout = () => {
     const [modalsState, setModalsState] = useState({
@@ -102,3 +104,18 @@ ManageRoles.getLayout = (page: ReactElement) => {
 };
 
 export default ManageRoles;
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    if (!context.req.cookies?.jwt_token || !await auth(context.req.cookies.jwt_token)) {
+        return {
+            redirect: {
+                destination: '/admin/login',
+                permanent: true
+            }
+        };
+    }
+
+    return {
+        props: {}
+    };
+};

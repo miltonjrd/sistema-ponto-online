@@ -1,10 +1,13 @@
 import { ReactElement, useState } from 'react';
 import { GetServerSideProps } from 'next';
 import type { NextPageWithLayout } from '../_app';
+import axios from '@/utils/axios';
 import auth from '@/utils/auth';
+import toast from 'react-hot-toast';
 
 // components
 import CreateEmployeeModal from '@/components/modules/CreateEmployeeModal';
+import EditEmployeeModal from '@/components/modules/EditEmployeeModal';
 import Layout from '@/components/common/Layout';
 
 // icons
@@ -17,13 +20,26 @@ import useApi from '@/hooks/useApi';
 
 // interfaces
 import Employee from '@/interfaces/Employee';
+import { AxiosError } from 'axios';
 
 const ManageEmployees: NextPageWithLayout = () => {
+    const [currentlyEditingEmployeeId, setCurrentlyEditingEmployeeId] = useState<number>(-1);
     const [modalsState, setModalsState] = useState({
         CREATE_EMPLOYEE_MODAL_SHOW: false
     });
 
-    const { data: employees, isLoading } = useApi<Employee[]>('/employees');
+    const { data: employees, mutate, isLoading } = useApi<Employee[]>('/employees');
+
+    const handleEmployeeDelete = async (employeeId: number) => {
+        await toast.promise(axios.delete(`/employees/${employeeId}`), {
+            loading: 'Realizando operação...',
+            error: 'Não foi possivel completar a operação.',
+            success: 'Funcionário deletado com sucesso.'
+        });
+
+        // re-render data
+        mutate();
+    };
 
     return (
         <main className="container flex flex-col items-center mx-auto px-4 pt-10">
@@ -86,10 +102,20 @@ const ManageEmployees: NextPageWithLayout = () => {
                                     <td className="text-center py-3">{employee.manager_name}</td>
                                     <td className="py-3">
                                         <div className="flex justify-around">
-                                            <button type="button" title="Excluir" className="text-red-500 hover:bg-red-50 active:bg-red-100 p-2 rounded-md">
+                                            <button 
+                                                type="button" 
+                                                title="Excluir" 
+                                                className="text-red-500 hover:bg-red-50 active:bg-red-100 p-2 rounded-md"
+                                                onClick={() => handleEmployeeDelete(employee.id)}
+                                            >
                                                 <BsTrash />
                                             </button>
-                                            <button type="button" title="Editar" className="text-blue-500 hover:bg-blue-50 active:bg-blue-100 p-2 rounded-md">
+                                            <button 
+                                                type="button" 
+                                                title="Editar" 
+                                                className="text-blue-500 hover:bg-blue-50 active:bg-blue-100 p-2 rounded-md"
+                                                onClick={() => setCurrentlyEditingEmployeeId(employee.id)}
+                                            >
                                                 <TiEdit />
                                             </button>
                                         </div>
@@ -101,11 +127,16 @@ const ManageEmployees: NextPageWithLayout = () => {
                 </div>
             </div>
             <CreateEmployeeModal 
-            show={modalsState.CREATE_EMPLOYEE_MODAL_SHOW} 
-            close={() => setModalsState((state) => ({ 
-                ...state,
-                CREATE_EMPLOYEE_MODAL_SHOW: false
-            }))} 
+                show={modalsState.CREATE_EMPLOYEE_MODAL_SHOW} 
+                close={() => setModalsState((state) => ({ 
+                    ...state,
+                    CREATE_EMPLOYEE_MODAL_SHOW: false
+                }))} 
+            />
+            <EditEmployeeModal
+                show={currentlyEditingEmployeeId !== -1}
+                close={() => setCurrentlyEditingEmployeeId(-1)}
+                employeeId={currentlyEditingEmployeeId}
             />
         </main>
     );
@@ -121,18 +152,17 @@ ManageEmployees.getLayout = (page: ReactElement) => {
 
 export default ManageEmployees;
 
-// export const getServerSideProps: GetServerSideProps = async (context) => {
-//     if (!context.req.cookies?.jwt_token || !await auth(context.req.cookies.jwt_token)) {
-//         console.log('AUJSHIS')
-//         return {
-//             redirect: {
-//                 destination: '/admin/login',
-//                 permanent: true
-//             }
-//         };
-//     }
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    if (!context.req.cookies?.jwt_token || !await auth(context.req.cookies.jwt_token)) {
+        return {
+            redirect: {
+                destination: '/admin/login',
+                permanent: true
+            }
+        };
+    }
 
-//     return {
-//         props: {}
-//     };
-// };
+    return {
+        props: {}
+    };
+};
