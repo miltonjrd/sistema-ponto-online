@@ -21,7 +21,7 @@ class EmployeeAuthenticationService implements ServiceContract
 	 * @param mixed $data
      * @return string
 	 */
-    public function execute(mixed $data)
+    public function execute(mixed $data): mixed
     {
         $credentials = [
             'id' => $data->code,

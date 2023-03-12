@@ -5,7 +5,8 @@ namespace App\Services;
 use App\Contracts\ClockedInRepositoryContract;
 use Illuminate\Http\Request;
 
-class ListAllCIWithEmployeeDataService {
+class ListAllCIWithEmployeeDataService 
+{
     /**
      * @var ClockedInRepositoryContract
      */
@@ -18,11 +19,13 @@ class ListAllCIWithEmployeeDataService {
 
     public function execute(Request $request)
     {
-        $request->validate([
-            'start_date' => 'sometimes|string',
-            'end_date' => 'sometimes|string'
-        ]);
+        // $request->validate([
+        //     'start_date' => 'sometimes|string',
+        //     'end_date' => 'sometimes|string'
+        // ]);
 
-        $this->repository->listAllWithEmployeeData($request->start_date, $request->end_date);
+        $results = $this->repository->listAllWithEmployeeData();
+
+        return $results;
     }
 }

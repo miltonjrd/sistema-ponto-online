@@ -1,11 +1,12 @@
 <?php
 
 namespace App\Services;
-use App\Contracts\ServiceContract;
 use App\Contracts\RepositoryContract;
-use Illuminate\Support\Facades\Request;
 
-class DeleteEmployeeService implements ServiceContract
+use App\Contracts\ServiceContract;
+use App\Contracts\ServiceReadContract;
+
+class ListEmployeeByIdService implements ServiceContract 
 {
     /**
      * @var RepositoryContract;
@@ -17,10 +18,12 @@ class DeleteEmployeeService implements ServiceContract
         $this->repository = $repository;
     }
 
+    /**
+     * @return mixed
+     */
     public function execute(mixed $id): mixed
     {
-        $this->repository->delete($id);
-
-        return true;
+        $employees = $this->repository->listByid($id);
+        return $employees;
     }
 }

@@ -3,24 +3,21 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
 
-class EmployeeClockInRequest extends FormRequest
+class ListEmployeeByIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return !!auth()->user();
+        return true;
     }
 
-    public function validated($key = null, $default = null)
+    public function validationData(): array
     {
-        $data = [
-            'employee_id' => auth()->user()->id
-        ];
-
+        $data = $this->all();
+        $data['id'] = $this->route('id');
         return $data;
     }
 
@@ -32,7 +29,7 @@ class EmployeeClockInRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'id' => 'required|integer'
         ];
     }
 }

@@ -16,6 +16,10 @@ class EmployeeRepository implements RepositoryContract
         return Employee::all();
     }
 
+    public function listById(int $id): Employee {
+        return Employee::where('id', $id)->first();
+    }
+
     /**
      * @return bool;
      */

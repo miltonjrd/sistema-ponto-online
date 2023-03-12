@@ -22,12 +22,10 @@ class EmployeeClockInService implements ServiceContract
 	 * @param Request $request
 	 */
     
-	public function execute(EmployeeClockInRequest $request) 
+	public function execute(mixed $data): mixed
     {
-        $data = [
-            'employee_id' => auth()->user()->id
-        ];
+        $result = $this->repository->create($data);
 
-        $this->repository->create($data);
+        return $result;
 	}
 }

@@ -11,7 +11,7 @@ class DeleteEmployeeRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return !!auth()->user();
     }
 
     /**
@@ -19,6 +19,15 @@ class DeleteEmployeeRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
+
+    public function validationData()
+    {
+        $data = $this->all();
+        $data['id'] = $this->route('id');
+
+        return $data;
+    }
+
     public function rules(): array
     {
         return [

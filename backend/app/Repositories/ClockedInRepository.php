@@ -36,29 +36,36 @@ class ClockedInRepository implements ClockedInRepositoryContract
         // ->join('roles AS r', 'id', 'c.role_id')
         // ->get();
 
-        $sql = "SELECT e.id, e.name AS employee_name, r.title AS role, e.age, e.manager_name, clocked_in.created_at
+        $sql = "SELECT e.id, e.name AS employee_name, r.title AS role, e.age, a.name AS manager_name, clocked_in.created_at
             FROM clocked_in
             INNER JOIN employees AS e
             ON e.id = clocked_in.employee_id
             INNER JOIN roles AS r
             ON r.id = e.role_id
+            INNER JOIN admins AS a
+            ON a.id = e.manager_id
         ";
 
         // in case of filters being especified, concat it to the query
         if ($filterDateStart) {
-            $sql += " WHERE clocked_in.created_at >= :filterDateStart";
+            $sql .= " WHERE clocked_in.created_at >= :filterDateStart";
         }
 
         if ($filterDateEnd) {
-            $sql += " AND clocked_in.created_at <= :filterDateEnd";
+            $sql .= " AND clocked_in.created_at <= :filterDateEnd";
         }
 
-        $sql += " ORDER BY clocked_in.created_at DESC";
+        $sql .= " ORDER BY clocked_in.created_at DESC";
 
-        $results = DB::select($sql, [
-            'filterDateStart' => $filterDateStart,
-            'filterDateEnd' => $filterDateEnd
-        ]);
+        $paramArray = [];
+
+        if ($filterDateStart)
+            $paramArray['filterDateStart'] = $filterDateStart;
+
+        if ($filterDateEnd)
+            $paramArray['filterDateEnd'] = $filterDateEnd;
+
+        $results = DB::select($sql, $paramArray);
 
         return $results;
     }

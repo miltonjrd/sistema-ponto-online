@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+
 
 class CreateEmployeeRequest extends FormRequest
 {
@@ -20,6 +22,7 @@ class CreateEmployeeRequest extends FormRequest
         // append manager_id to the request before validation
         $data = $this->all();
 
+        $data['password'] = Hash::make($data['password']);
         return array_merge($data, [ 'manager_id' => auth()->user()->id ]);
     }
 

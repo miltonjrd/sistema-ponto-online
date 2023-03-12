@@ -27,12 +27,16 @@ Route::controller(AdminController::class)->prefix('/admin')->group(function () {
 
 Route::controller(EmployeeController::class)->prefix('/employees')->group(function () {
     Route::get('/', 'listAll');
-
+    Route::get('/clockin', 'listAllCIWithEmployeeData');
+    Route::get('/{id}', 'listById');
+    
     Route::middleware(['assign.guard:admins'])->post('/', 'create');
+    Route::middleware(['assign.guard:employees'])->post('/login', 'login');
+    Route::middleware(['assign.guard:employees'])->post('/clockin', 'clockIn');
 
     Route::middleware(['assign.guard:admins'])->put('/', 'update');
 
-    Route::middleware(['assign.guard:admins'])->delete('/', 'delete');
+    Route::middleware(['assign.guard:admins'])->delete('/{id}', 'delete');
 });
 
 Route::controller(RoleController::class)->prefix('/roles')->group(function () {
